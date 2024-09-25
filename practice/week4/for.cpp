@@ -5,7 +5,7 @@ int main(){
     long fact = 1;
     int n;
 
-    cout << "정수를  입력하시오: "
+    cout << "정수를  입력하시오: ";
     cin >> n;
 
     for(int  i = 0; i < n; i++){

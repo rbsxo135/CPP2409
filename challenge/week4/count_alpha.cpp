@@ -29,7 +29,7 @@ int main(){
                 vowel++;
                 break;
             default:
-                consonant++:
+                consonant++;
                 break;
         }
     }
