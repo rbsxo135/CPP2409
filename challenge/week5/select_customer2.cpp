@@ -66,6 +66,7 @@ int main()
         default:
         {
             cout << "그 외의 숫자를 입력하세요" << endl;
+            run = false;
             break;
         }
         }
