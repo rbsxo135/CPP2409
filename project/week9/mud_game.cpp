@@ -12,54 +12,109 @@ private:
 	int hp = 20; // 유저 체력
 	bool weapon = false; // 무기 가지고 있는지 여부
 	int armor = 0; // 갑옷 가지고 있는지 여부
+
+	// 이동하려는 곳이 유효한 좌표인지 체크하는 함수
+	// User 객체를 참조자 매개변수로 받는다
+	bool checkXY(int mapX, int mapY, string user_input) {
+		if (this->x >= 0 && this->x < mapX && this->y >= 0 && this->y < mapY) {
+			return true;
+		} else{
+			// 맵을 벗어났을 경우 오류 메시지를 출력하고 원래 좌표로 돌아간다
+			cout << "맵을 벗어났습니다. 다시 돌아갑니다." << endl;
+			if(user_input == "상"){
+				this->y++;
+			} else if(user_input == "하"){
+				this->y--;
+			} else if(user_input == "좌"){
+				this->x++;
+			} else if(user_input == "우"){
+				this->x--;
+			}
+		}
+		return false;
+	}
 public:
 	// private 멤버 변수를 리턴하는 get 메서드
 	int getX(){
-		return x;
+		return this->x;
 	}
 	int getY(){
-		return y;
+		return this->y;
 	}
 	int getHp(){
-		return hp;
+		return this->hp;
 	}
 	bool getWeapon(){
-		return weapon;
+		return this->weapon;
 	}
 	int getArmor(){
-		return armor;
+		return this->armor;
 	}
 
 	// private 멤버 변수롤 조작하는 메서드
-	void move_up(){
-		y--;
-	}
-	void move_down(){
-		y++;
-	}
-	void move_left(){
-		x--;
-	}
-	void move_right(){
-		x++;
+
+	// 유저의 위치를 이동시키는 메서드
+	// 이동이 유효할 경우 true 그러지 않을 경우 false 반환
+	bool move(int mapX, int mapY, string user_input){
+		if (user_input == "상") {
+			// 위로 한 칸 올라가기
+			this->y--;
+			bool inMap = this->checkXY(mapX, mapY, user_input);
+			if (inMap == true) {
+				this->setHp(-1);
+				cout << "위로 한 칸 올라갑니다." << endl;
+				return true;
+			}
+		}
+		else if (user_input == "하") {
+			// 아래로 한 칸 내려가기
+			this->y++;
+			bool inMap = this->checkXY(mapX, mapY, user_input);
+			if (inMap == true) {
+				this->setHp(-1);
+				cout << "아래로 한 칸 내려갑니다." << endl;
+				return true;
+			}
+		}
+		else if (user_input == "좌") {
+			// 왼쪽으로 한 칸 이동하기
+			this->x--;
+			bool inMap = this->checkXY(mapX, mapY, user_input);
+			if (inMap == true) {
+				this->setHp(-1);
+				cout << "왼쪽으로 이동합니다." << endl;
+				return true;
+			}
+		}
+		else if (user_input == "우") {
+			// 오른쪽으로 한 칸 이동하기
+			this->x++;
+			bool inMap = this->checkXY(mapX, mapY, user_input);
+			if (inMap == true) {
+				this->setHp(-1);
+				cout << "오른쪽으로 이동합니다." << endl;
+				return true;
+			}
+		} 
+		return false;
 	}
 	void setHp(int hpDiff){
 		// HP 변경 전/후 차이를 매개변수로 받는다
-		hp += hpDiff;
+		this->hp += hpDiff;
 	}
 	void equip_weapon(){
-		weapon = true;
+		this->weapon = true;
 	}
 	void equip_armor(){
-		armor++;
+		this->armor++;
 	}
 	void lose_armor(){
-		armor--;
+		this->armor--;
 	}
 };
 
 // 사용자 정의 함수
-bool checkXY(User& user, int mapX, int mapY, string user_input);
+// checkXY 메서드는 User 클래스 내부로 이식
 void displayMap(int map[][mapX], User user);
 bool checkGoal(int map[][mapX], User user);
 void checkState(int map[][mapX], User& user);
@@ -86,47 +141,10 @@ int main() {
 
 		cout << "현재 HP: " << user.getHp() << " 명령어를 입력하세요 (상,하,좌,우,지도,종료): ";
 		cin >> user_input;
-
-		if (user_input == "상") {
-			// 위로 한 칸 올라가기
-			user.move_up();
-			bool inMap = checkXY(user, mapX, mapY, user_input);
-			if (inMap == true) {
-				user.setHp(-1);
-				cout << "위로 한 칸 올라갑니다." << endl;
-				displayMap(map, user);
-				checkState(map, user);
-			}
-		}
-		else if (user_input == "하") {
-			// TODO: 아래로 한 칸 내려가기
-			user.move_down();
-			bool inMap = checkXY(user, mapX, mapY, user_input);
-			if (inMap == true) {
-				user.setHp(-1);
-				cout << "위로 한 칸 내려갑니다." << endl;
-				displayMap(map, user);
-				checkState(map, user);
-			}
-		}
-		else if (user_input == "좌") {
-			// TODO: 왼쪽으로 이동하기
-			user.move_left();
-			bool inMap = checkXY(user, mapX, mapY, user_input);
-			if (inMap == true) {
-				user.setHp(-1);
-				cout << "왼쪽으로 이동합니다." << endl;
-				displayMap(map, user);
-				checkState(map, user);
-			}
-		}
-		else if (user_input == "우") {
-			// TODO: 오른쪽으로 이동하기
-			user.move_right();
-			bool inMap = checkXY(user, mapX, mapY, user_input);
-			if (inMap == true){
-				user.setHp(-1);
-				cout << "오른쪽으로 이동합니다." << endl;
+		
+		if (user_input == "상" || user_input == "하" || user_input == "좌" || user_input == "우"){
+			// 입력이 유효해 유저가 이동했을 경우 displayMap, checkState 메서드 호출
+			if(user.move(mapX, mapY, user_input) == true){
 				displayMap(map, user);
 				checkState(map, user);
 			}
@@ -148,6 +166,7 @@ int main() {
 		if(user.getHp() <= 0){
 			cout << "hp가 0이하가 되었습니다. 실패했습니다." << endl;
 			cout << "게임을 종료합니다." << endl;
+			break;
 		}
 
 		// 목적지에 도달했는지 체크
@@ -193,28 +212,6 @@ void displayMap(int map[][mapX], User user) {
 		cout << endl;
 		cout << " -------------------------------- " << endl;
 	}
-}
-
-// 이동하려는 곳이 유효한 좌표인지 체크하는 함수
-// User 객체를 참조자 매개변수로 받는다
-bool checkXY(User& user, int mapX, int mapY, string user_input) {
-	bool checkFlag = false;
-	if (user.getX() >= 0 && user.getX() < mapX && user.getY() >= 0 && user.getY() < mapY) {
-		checkFlag = true;
-	} else{
-		// 맵을 벗어났을 경우 오류 메시지를 출력하고 원래 좌표로 돌아간다
-		cout << "맵을 벗어났습니다. 다시 돌아갑니다." << endl;
-		if(user_input == "상"){
-			user.move_down();
-		} else if(user_input == "하"){
-			user.move_up();
-		} else if(user_input == "좌"){
-			user.move_right();
-		} else if(user_input == "우"){
-			user.move_left();
-		}
-	}
-	return checkFlag;
 }
 
 // 유저의 위치가 목적지인지 체크하는 함수
