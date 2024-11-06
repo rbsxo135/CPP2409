@@ -99,7 +99,7 @@ void User::lose_armor(){
     this->armor--;
 }
 
-void displayMap(int map[][mapX], User user) {
+void displayMap(vector<vector<int>> map, User user) {
 	for (int i = 0; i < mapY; i++) {
 		for (int j = 0; j < mapX; j++) {
 			if (i == user.getY() && j == user.getX()) {
@@ -133,7 +133,7 @@ void displayMap(int map[][mapX], User user) {
 
 // 유저의 위치가 목적지인지 체크하는 함수
 // User 객체를 매개변수로 받아 x, y좌표를 구한다
-bool checkGoal(int map[][mapX], User user) {
+bool checkGoal(vector<vector<int>> map, User user) {
 	// 목적지 도착하면
 	if (map[user.getY()][user.getX()] == 4) {
 		return true;
@@ -143,7 +143,7 @@ bool checkGoal(int map[][mapX], User user) {
 
 // 아이템, 포션, 적을 만났을 때 메시지 출력
 // User 객체를 참조자 매개변수로 받는다
-void checkState(int map[][mapX], User& user){
+void checkState(vector<vector<int>> map, User& user){
 	if(map[user.getY()][user.getX()] == 1){
 		// 아이템 중 무기와 갑옷을 랜덤하게 얻는다
 		int item = rand() % 2;

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <string>
 using namespace std;
 
 const int mapX = 5;
@@ -33,7 +35,7 @@ public:
 
 // 사용자 정의 함수
 // checkXY 메서드는 User 클래스 내부로 이식
-void displayMap(int map[][mapX], User user);
-bool checkGoal(int map[][mapX], User user);
-void checkState(int map[][mapX], User& user);
+void displayMap(vector<vector<int>> map, User user);
+bool checkGoal(vector<vector<int>> map, User user);
+void checkState(vector<vector<int>> map, User& user);
 bool checkUser(User user);
